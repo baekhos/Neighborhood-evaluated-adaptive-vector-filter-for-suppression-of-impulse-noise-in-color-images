@@ -65,6 +65,7 @@
     \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
     \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
                                 % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
     
 
     
@@ -91,6 +92,8 @@
     \definecolor{ansi-cyan-intense}{HTML}{258F8F}
     \definecolor{ansi-white}{HTML}{C5C1B4}
     \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
 
     % commands and environments needed by pandoc snippets
     % extracted from the output of `pandoc -s`
@@ -137,11 +140,18 @@
     % Define a nice break command that doesn't care if a line doesn't already
     % exist.
     \def\br{\hspace*{\fill} \\* }
-    % Math Jax compatability definitions
+    % Math Jax compatibility definitions
     \def\gt{>}
     \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
     % Document parameters
+    % Document title
     \title{TemaPaic}
+    
+    
     
     
     
@@ -280,18 +290,17 @@
     
 
     
-    \hypertarget{prelucrarea-si-analiza-imaginilor-color--proiect}{%
-\section{PRELUCRAREA SI ANALIZA IMAGINILOR COLOR-
-Proiect}\label{prelucrarea-si-analiza-imaginilor-color--proiect}}
+    \section{PRELUCRAREA SI ANALIZA IMAGINILOR COLOR-
+Proiect}\label{prelucrarea-si-analiza-imaginilor-color--proiect}
 
-\hypertarget{agloritmula-neighborhood-evaluated-adaptive-vector-filter-for-suppression-of-impulse-noise-in-color-images}{%
 \subsection{Agloritmul:A neighborhood evaluated adaptive vector filter
 for suppression of impulse noise in color
-images}\label{agloritmula-neighborhood-evaluated-adaptive-vector-filter-for-suppression-of-impulse-noise-in-color-images}}
+images}\label{agloritmula-neighborhood-evaluated-adaptive-vector-filter-for-suppression-of-impulse-noise-in-color-images}
 
-\hypertarget{citirea-si-schibarea-rezolutiei-pozelor}{%
-\subsubsection{Citirea si schibarea rezolutiei
-pozelor:}\label{citirea-si-schibarea-rezolutiei-pozelor}}
+\#\#\#\# Pentru ca rezultatele testelor noastre să fie cât mai
+concludente s-au ales 6 imagini color a căror rezoluție a fost
+modificată pentru a corespunde cu celelalte citite. \#\#\# Citirea și
+schibarea rezoluției pozelor:
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{from} \PY{n+nn}{skimage} \PY{k}{import} \PY{n}{io}\PY{p}{,}\PY{n}{color}\PY{p}{,}\PY{n}{util}
@@ -345,7 +354,6 @@ pozelor:}\label{citirea-si-schibarea-rezolutiei-pozelor}}
         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-
     \begin{Verbatim}[commandchars=\\\{\}]
 C:\textbackslash{}Users\textbackslash{}Nitroi\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Continuum\textbackslash{}anaconda3\textbackslash{}envs\textbackslash{}PAIC\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}skimage\textbackslash{}transform\textbackslash{}\_warps.py:105: UserWarning: The default mode, 'constant', will be changed to 'reflect' in skimage 0.15.
   warn("The default mode, 'constant', will be changed to 'reflect' in "
@@ -360,9 +368,8 @@ C:\textbackslash{}Users\textbackslash{}Nitroi\textbackslash{}AppData\textbacksla
     \end{verbatim}
 
     
-    \hypertarget{functiile-pentru-zgomot-gaussian-respectiv-zgomot-impulsiv.}{%
-\subsubsection{Functiile pentru zgomot Gaussian, respectiv zgomot
-impulsiv.}\label{functiile-pentru-zgomot-gaussian-respectiv-zgomot-impulsiv.}}
+    \subsubsection{Functiile pentru zgomot Gaussian, respectiv zgomot
+impulsiv.}\label{functiile-pentru-zgomot-gaussian-respectiv-zgomot-impulsiv.}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}2}]:} \PY{k+kn}{import} \PY{n+nn}{os}
@@ -395,10 +402,11 @@ impulsiv.}\label{functiile-pentru-zgomot-gaussian-respectiv-zgomot-impulsiv.}}
               \PY{k}{return} \PY{n}{out}
 \end{Verbatim}
 
+    \#\#\# Adăugarea zgomotului pe imagini
 
-    \hypertarget{adaugarea-zgomotului-pe-imagini}{%
-\subsubsection{Adaugarea zgomotului pe
-imagini}\label{adaugarea-zgomotului-pe-imagini}}
+\#\#\#\# Toate cele 6 poze au fost alterate cu zgomot Gaussian,
+respectiv Impulsiv de 10\%. Ultimele 2 poze au fost alterate și cu alte
+intensități ale zgomotului
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}14}]:} \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{=}\PY{p}{[}\PY{p}{]}
@@ -455,16 +463,14 @@ imagini}\label{adaugarea-zgomotului-pe-imagini}}
          \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img6ZI}\PY{p}{)}
 \end{Verbatim}
 
-
     \begin{Verbatim}[commandchars=\\\{\}]
 C:\textbackslash{}Users\textbackslash{}Nitroi\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Continuum\textbackslash{}anaconda3\textbackslash{}envs\textbackslash{}PAIC\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}ipykernel\_launcher.py:21: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
 C:\textbackslash{}Users\textbackslash{}Nitroi\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Continuum\textbackslash{}anaconda3\textbackslash{}envs\textbackslash{}PAIC\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}ipykernel\_launcher.py:27: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
 
     \end{Verbatim}
 
-    \hypertarget{implementarea-filtrelor-clasice-mediere-si-medie-aritmetca}{%
-\subsubsection{Implementarea filtrelor clasice mediere si medie
-aritmetca}\label{implementarea-filtrelor-clasice-mediere-si-medie-aritmetca}}
+    \subsubsection{Implementarea filtrelor clasice mediere si medie
+aritmetca}\label{implementarea-filtrelor-clasice-mediere-si-medie-aritmetca}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}4}]:} \PY{k}{def} \PY{n+nf}{medianFilter}\PY{p}{(}\PY{n}{img}\PY{p}{)}\PY{p}{:}
@@ -491,10 +497,56 @@ aritmetca}\label{implementarea-filtrelor-clasice-mediere-si-medie-aritmetca}}
             \PY{k}{return} \PY{n}{imag}
 \end{Verbatim}
 
+    \subsubsection{Implementarea Neighborhood evaluated adaptive filter
+(NEAVF)}\label{implementarea-neighborhood-evaluated-adaptive-filter-neavf}
 
-    \hypertarget{implementarea-neighborhood-evaluated-adaptive-filter-neavf}{%
-\subsubsection{Implementarea Neighborhood evaluated adaptive filter
-(NEAVF)}\label{implementarea-neighborhood-evaluated-adaptive-filter-neavf}}
+\paragraph{Algoritmul urmează o serie de pași pentru a determina pentru
+fiecare pixel al imaginii în parte daca acesta este s-au nu afectat de
+zgomot. În teorie aceasta metoda ar trebui la final să ne ajute să
+obținem imagini cu zgomot mic și cu un contrast similar cu cel al
+imaginii inițiale, filtrul lasănd neschibați pixelii determinați ca
+fiind neafectați de zgomot. Asemanator oricărui filtru, NEAVF folosește
+o fereastra de vecinatate și efectuează operații pe
+aceasta.}\label{algoritmul-urmeazux103-o-serie-de-paux219i-pentru-a-determina-pentru-fiecare-pixel-al-imaginii-uxeen-parte-daca-acesta-este-s-au-nu-afectat-de-zgomot.-uxeen-teorie-aceasta-metoda-ar-trebui-la-final-sux103-ne-ajute-sux103-obux21binem-imagini-cu-zgomot-mic-ux219i-cu-un-contrast-similar-cu-cel-al-imaginii-iniux21biale-filtrul-lasux103nd-neschibaux21bi-pixelii-determinaux21bi-ca-fiind-neafectaux21bi-de-zgomot.-asemanator-oricux103rui-filtru-neavf-foloseux219te-o-fereastra-de-vecinatate-ux219i-efectueazux103-operaux21bii-pe-aceasta.}
+
+\paragraph{Menționăm ca dimensiunea ferestrei filtrului este de
+3x3.}\label{menux21bionux103m-ca-dimensiunea-ferestrei-filtrului-este-de-3x3.}
+
+\paragraph{Pașii acestui algoritm
+sunt:}\label{paux219ii-acestui-algoritm-sunt}
+
+\subparagraph{1) Aplicarea distanței euclidiene intre pixelul central și
+ceilalți aflați în fereastră și însumarea acestora. Ulterior aplicarea
+aceleași formule pentru ceilalți pixeli din fereastră. Cele 9 rezultate
+vor fi stocate intr-un vector
+R.}\label{aplicarea-distanux21bei-euclidiene-intre-pixelul-central-ux219i-ceilalux21bi-aflaux21bi-uxeen-fereastrux103-ux219i-uxeensumarea-acestora.-ulterior-aplicarea-aceleaux219i-formule-pentru-ceilalux21bi-pixeli-din-fereastrux103.-cele-9-rezultate-vor-fi-stocate-intr-un-vector-r.}
+
+    \subparagraph{2) Vom asocia ficarui pixel din fereastră R-ul
+corespunzător. Pe baza valorii R corespunzătoare fiecărui pixel vom face
+o sortare a acestora. Astfel pixelul de pe poziția 0 sau pixelul cu R-ul
+cel mai mic are gradul de similaritate maxim față de
+ceilalți.}\label{vom-asocia-ficarui-pixel-din-fereastrux103-r-ul-corespunzux103tor.-pe-baza-valorii-r-corespunzux103toare-fiecux103rui-pixel-vom-face-o-sortare-a-acestora.-astfel-pixelul-de-pe-poziux21bia-0-sau-pixelul-cu-r-ul-cel-mai-mic-are-gradul-de-similaritate-maxim-faux21bux103-de-ceilalux21bi.}
+
+\subparagraph{3) Algoritmul are în vedere totuși și situațiile în care
+pixeli aflați în zonele de margine( ex: trecerea de la obiectul de
+interes la fundal) ar putea fi clasificați drept pixeli cu zgomot.
+Articolul propune astfel o funcție (DALS) a cărui rezultat îl vom nota
+cu F cu rolul de a calcula distribuția similarității locale utilizând
+valorile obținute la pasul anterior(adică R-urile). Implementarea
+algorimului nostru itereaza asupra pozei de 2 ori. Așadar în prima
+iterație vom reține valorile lui F și ale lui C0,corespunzător lui R
+min, în fiecare pixel în 2 matrici distincte pentru a le putea utiliza
+în cea de a doua iterație. În această implementare λ a fost ales
+2.}\label{algoritmul-are-uxeen-vedere-totuux219i-ux219i-situaux21biile-uxeen-care-pixeli-aflaux21bi-uxeen-zonele-de-margine-ex-trecerea-de-la-obiectul-de-interes-la-fundal-ar-putea-fi-clasificaux21bi-drept-pixeli-cu-zgomot.-articolul-propune-astfel-o-funcux21bie-dals-a-cux103rui-rezultat-uxeel-vom-nota-cu-f-cu-rolul-de-a-calcula-distribuux21bia-similaritux103ux21bii-locale-utilizuxe2nd-valorile-obux21binute-la-pasul-anterioradicux103-r-urile.-implementarea-algorimului-nostru-itereaza-asupra-pozei-de-2-ori.-aux219adar-uxeen-prima-iteraux21bie-vom-reux21bine-valorile-lui-f-ux219i-ale-lui-c0corespunzux103tor-lui-r-min-uxeen-fiecare-pixel-uxeen-2-matrici-distincte-pentru-a-le-putea-utiliza-uxeen-cea-de-a-doua-iteraux21bie.-uxeen-aceastux103-implementare-ux3bb-a-fost-ales-2.}
+
+    \subparagraph{4) În ultima iterație se vor urmări acleasi vecinătăți ca
+în prima iterație însă efectuarea deciziei referitoare la starea
+pixelului se va efectuă pe bază funcției H și a pragului Δ ales aici
+7.5. Pentr γ am păstrat valoarea propusă de articol, 2. Comparând H cu
+pragul vom află dacă pixelul a fost sau nu afectat de
+zgomot.}\label{uxeen-ultima-iteraux21bie-se-vor-urmux103ri-acleasi-vecinux103tux103ux21bi-ca-uxeen-prima-iteraux21bie-uxeensux103-efectuarea-deciziei-referitoare-la-starea-pixelului-se-va-efectuux103-pe-bazux103-funcux21biei-h-ux219i-a-pragului-ux3b4-ales-aici-7.5.-pentr-ux3b3-am-pux103strat-valoarea-propusux103-de-articol-2.-comparuxe2nd-h-cu-pragul-vom-aflux103-dacux103-pixelul-a-fost-sau-nu-afectat-de-zgomot.}
+
+ 
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}5}]:} \PY{k+kn}{import} \PY{n+nn}{operator}
@@ -545,10 +597,8 @@ aritmetca}\label{implementarea-filtrelor-clasice-mediere-si-medie-aritmetca}}
             \PY{k}{return} \PY{n}{imag}
 \end{Verbatim}
 
-
-    \hypertarget{functiile-utilizate-la-calculul-zgomotului}{%
-\subsection{Functiile utilizate la calculul
-zgomotului}\label{functiile-utilizate-la-calculul-zgomotului}}
+    \subsection{Functiile utilizate la calculul
+zgomotului}\label{functiile-utilizate-la-calculul-zgomotului}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}6}]:} \PY{k+kn}{import} \PY{n+nn}{math}
@@ -570,13 +620,10 @@ zgomotului}\label{functiile-utilizate-la-calculul-zgomotului}}
             \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{r} \PY{o}{\PYZhy{}} \PY{n}{c}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
+    \subsection{Comparatia rezultatlor celor 3
+filtre}\label{comparatia-rezultatlor-celor-3-filtre}
 
-    \hypertarget{comparatia-rezultatlor-celor-3-filtre}{%
-\subsection{Comparatia rezultatlor celor 3
-filtre}\label{comparatia-rezultatlor-celor-3-filtre}}
-
-\hypertarget{imaginea-1}{%
-\subsubsection{Imaginea 1}\label{imaginea-1}}
+\subsubsection{Imaginea 1}\label{imaginea-1}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}7}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{0}
@@ -618,14 +665,12 @@ filtre}\label{comparatia-rezultatlor-celor-3-filtre}}
         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_13_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    \hypertarget{imaginea-2}{%
-\subsubsection{Imaginea 2}\label{imaginea-2}}
+    \subsubsection{Imaginea 2}\label{imaginea-2}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}8}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{1}
@@ -667,14 +712,12 @@ filtre}\label{comparatia-rezultatlor-celor-3-filtre}}
         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_17_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    \hypertarget{imaginea-3}{%
-\subsubsection{Imaginea 3}\label{imaginea-3}}
+    \subsubsection{Imaginea 3}\label{imaginea-3}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}9}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{2}
@@ -716,14 +759,12 @@ filtre}\label{comparatia-rezultatlor-celor-3-filtre}}
         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_17_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_19_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    \hypertarget{imaginea-4}{%
-\subsubsection{Imaginea 4}\label{imaginea-4}}
+    \subsubsection{Imaginea 4}\label{imaginea-4}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}10}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{3}
@@ -765,14 +806,12 @@ filtre}\label{comparatia-rezultatlor-celor-3-filtre}}
          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_19_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_21_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    \hypertarget{imaginea-5}{%
-\subsubsection{Imaginea 5}\label{imaginea-5}}
+    \subsubsection{Imaginea 5}\label{imaginea-5}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}11}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{4}
@@ -814,9 +853,8 @@ filtre}\label{comparatia-rezultatlor-celor-3-filtre}}
          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_21_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
@@ -860,9 +898,8 @@ filtre}\label{comparatia-rezultatlor-celor-3-filtre}}
          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_22_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_24_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
@@ -906,14 +943,12 @@ filtre}\label{comparatia-rezultatlor-celor-3-filtre}}
          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_25_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    \hypertarget{imaginea-6}{%
-\subsubsection{Imaginea 6}\label{imaginea-6}}
+    \subsubsection{Imaginea 6}\label{imaginea-6}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}12}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{7}
@@ -955,9 +990,8 @@ filtre}\label{comparatia-rezultatlor-celor-3-filtre}}
          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_25_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
@@ -1001,9 +1035,8 @@ filtre}\label{comparatia-rezultatlor-celor-3-filtre}}
          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_26_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
@@ -1047,12 +1080,41 @@ filtre}\label{comparatia-rezultatlor-celor-3-filtre}}
          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_29_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
+    \subsubsection{Rezultatele filtrului.}\label{rezultatele-filtrului.}
+
+\#\#\#\# Zgomot gaussian: Având în vedere că filtrul este destinat
+filtrării zgomotului impulsiv rezultatele acestuia pe imagini alterate
+de zgomot gaussian erau de așteptat să fie slabe. Măsuratorile de
+calitate sunt mai slabe decât cele ale filtrelor clasice. Vizual, NEAVF
+este mai plăcut ochiului deoarece acesta reține din contrastul imaginii
+inițiale. \#\#\#\# Zgomot impulsiv: Filtrul nostru iese mai bine în
+măsuratorile de calitate față de celalte 2 filtre insă nu reușește să
+elimine tot zgomotul impulsiv de pe suprafața imaginii alterate
+indiferent de intensitatea acestuia. S-a observat că pe imagini cu
+rezoluție redusă filtrul scoate rezultate mai proaste decât filtrele
+clasice insă pe măsură ce mărim rezoluția imaginii, crește și
+performanță acestuia.
+
+\#\#\# Concluzii \#\#\#\# Personal consider că filtrul, cum este el
+prezentat în articol, prezintă o soluție pertinentă în filtrarea
+zgomotului impulsiv. Prezentarea parametrilor filtrului insă nu este
+clară iar modificarea parametrilor de la o poză la alta nu mi se pare o
+soluție viabilă. În modul meu de implementare, rularea întregului
+document durează aproximativ 45 de minute. Majoritatea timpului este
+atribuit filtrului prezentat mai sus datorită multitudinii de structuri
+repetitive prezente în acesta. După câteva teste am constat că rezoluția
+de 640x480 este optimă pentru a vizualiza un set de rezultate
+concludente într-un timp rezonabil.
+
+\#\#\# Referințe bibliografice \#\#\#\# 1) A neighborhood evaluated
+adaptive vector filter for suppression of impulse noise in color images
+Zhonghua Maa, Dagan Fenga,b, Hong Ren Wuc
+
 
     % Add a bibliography block to the postdoc
     
