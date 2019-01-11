@@ -65,7 +65,6 @@
     \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
     \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
                                 % normalem makes italics be italics, not underlines
-    \usepackage{mathrsfs}
     
 
     
@@ -92,8 +91,6 @@
     \definecolor{ansi-cyan-intense}{HTML}{258F8F}
     \definecolor{ansi-white}{HTML}{C5C1B4}
     \definecolor{ansi-white-intense}{HTML}{A1A6B2}
-    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
-    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
 
     % commands and environments needed by pandoc snippets
     % extracted from the output of `pandoc -s`
@@ -140,18 +137,11 @@
     % Define a nice break command that doesn't care if a line doesn't already
     % exist.
     \def\br{\hspace*{\fill} \\* }
-    % Math Jax compatibility definitions
+    % Math Jax compatability definitions
     \def\gt{>}
     \def\lt{<}
-    \let\Oldtex\TeX
-    \let\Oldlatex\LaTeX
-    \renewcommand{\TeX}{\textrm{\Oldtex}}
-    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
     % Document parameters
-    % Document title
     \title{TemaPaic}
-    
-    
     
     
     
@@ -290,73 +280,89 @@
     
 
     
-    \section{PRELUCRAREA SI ANALIZA IMAGINILOR COLOR-
-Proiect}\label{prelucrarea-si-analiza-imaginilor-color--proiect}
+    \hypertarget{prelucrarea-si-analiza-imaginilor-color--proiect}{%
+\section{PRELUCRAREA SI ANALIZA IMAGINILOR COLOR-
+Proiect}\label{prelucrarea-si-analiza-imaginilor-color--proiect}}
 
+\hypertarget{agloritmula-neighborhood-evaluated-adaptive-vector-filter-for-suppression-of-impulse-noise-in-color-images}{%
 \subsection{Agloritmul:A neighborhood evaluated adaptive vector filter
 for suppression of impulse noise in color
-images}\label{agloritmula-neighborhood-evaluated-adaptive-vector-filter-for-suppression-of-impulse-noise-in-color-images}
+images}\label{agloritmula-neighborhood-evaluated-adaptive-vector-filter-for-suppression-of-impulse-noise-in-color-images}}
 
+\hypertarget{citirea-si-schibarea-rezolutiei-pozelor}{%
 \subsubsection{Citirea si schibarea rezolutiei
-pozelor:}\label{citirea-si-schibarea-rezolutiei-pozelor}
+pozelor:}\label{citirea-si-schibarea-rezolutiei-pozelor}}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}11}]:} \PY{k+kn}{from} \PY{n+nn}{skimage} \PY{k}{import} \PY{n}{io}\PY{p}{,}\PY{n}{color}\PY{p}{,}\PY{n}{util}
-         \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
-         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
-         \PY{k+kn}{from} \PY{n+nn}{skimage}\PY{n+nn}{.}\PY{n+nn}{transform} \PY{k}{import} \PY{n}{rescale}\PY{p}{,} \PY{n}{resize}
-         \PY{k+kn}{import} \PY{n+nn}{skimage} \PY{k}{as} \PY{n+nn}{sk}
-         
-         \PY{n}{size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{480}\PY{p}{,} \PY{l+m+mi}{640}\PY{p}{)}
-         \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{60}\PY{p}{)}\PY{p}{)}
-         \PY{n}{img1} \PY{o}{=} \PY{n}{io}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{img/pic1.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{img1} \PY{o}{=} \PY{n}{resize}\PY{p}{(}\PY{n}{img1}\PY{p}{,} \PY{n}{size}\PY{p}{,}\PY{n}{anti\PYZus{}aliasing}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{c+c1}{\PYZsh{},anti\PYZus{}aliasing=True)\PYZbs{}\PYZbs{}}
-         
-         \PY{n}{img2} \PY{o}{=} \PY{n}{io}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{img/pic2.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{img2} \PY{o}{=} \PY{n}{resize}\PY{p}{(}\PY{n}{img2}\PY{p}{,} \PY{n}{size}\PY{p}{)}
-         
-         \PY{n}{img3} \PY{o}{=} \PY{n}{io}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{img/pic3.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{img3} \PY{o}{=} \PY{n}{resize}\PY{p}{(}\PY{n}{img3}\PY{p}{,} \PY{n}{size}\PY{p}{)}
-         
-         \PY{n}{img4} \PY{o}{=} \PY{n}{io}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{img/pic4.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{img4} \PY{o}{=} \PY{n}{resize}\PY{p}{(}\PY{n}{img4}\PY{p}{,} \PY{n}{size}\PY{p}{)}
-         
-         \PY{n}{img5} \PY{o}{=} \PY{n}{io}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{img/pic5.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{img5} \PY{o}{=} \PY{n}{resize}\PY{p}{(}\PY{n}{img5}\PY{p}{,} \PY{n}{size}\PY{p}{)}
-         
-         \PY{n}{img6} \PY{o}{=} \PY{n}{io}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{img/pic6.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{img6} \PY{o}{=} \PY{n}{resize}\PY{p}{(}\PY{n}{img6}\PY{p}{,} \PY{n}{size}\PY{p}{)}
-         
-         
-         \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imagini initiale}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
-         \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{611}\PY{p}{)}
-         \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{612}\PY{p}{)}
-         \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{613}\PY{p}{)}
-         \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{614}\PY{p}{)}
-         \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{615}\PY{p}{)}
-         \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{616}\PY{p}{)}
-         \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea 1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea 2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea 3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea 4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea 5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea 6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img1}\PY{p}{)}
-         \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img2}\PY{p}{)}
-         \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img3}\PY{p}{)}
-         \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img4}\PY{p}{)}
-         \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img5}\PY{p}{)}
-         \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img6}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{from} \PY{n+nn}{skimage} \PY{k}{import} \PY{n}{io}\PY{p}{,}\PY{n}{color}\PY{p}{,}\PY{n}{util}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        \PY{k+kn}{from} \PY{n+nn}{skimage}\PY{n+nn}{.}\PY{n+nn}{transform} \PY{k}{import} \PY{n}{rescale}\PY{p}{,} \PY{n}{resize}
+        \PY{k+kn}{import} \PY{n+nn}{skimage} \PY{k}{as} \PY{n+nn}{sk}
+        
+        
+        \PY{n}{size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{480}\PY{p}{,}\PY{l+m+mi}{640}\PY{p}{)}
+        \PY{n}{figs}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{40}\PY{p}{,}\PY{l+m+mi}{80}\PY{p}{)}
+        \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{n}{figs}\PY{p}{)}
+        \PY{n}{img1} \PY{o}{=} \PY{n}{io}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{img/pic1.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{img1} \PY{o}{=} \PY{n}{resize}\PY{p}{(}\PY{n}{img1}\PY{p}{,} \PY{n}{size}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{255}
+        
+        \PY{n}{img2} \PY{o}{=} \PY{n}{io}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{img/pic2.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{img2} \PY{o}{=} \PY{n}{resize}\PY{p}{(}\PY{n}{img2}\PY{p}{,} \PY{n}{size}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{255}
+        
+        \PY{n}{img3} \PY{o}{=} \PY{n}{io}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{img/pic3.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{img3} \PY{o}{=} \PY{n}{resize}\PY{p}{(}\PY{n}{img3}\PY{p}{,} \PY{n}{size}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{255}
+        
+        \PY{n}{img4} \PY{o}{=} \PY{n}{io}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{img/pic4.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{img4} \PY{o}{=} \PY{n}{resize}\PY{p}{(}\PY{n}{img4}\PY{p}{,} \PY{n}{size}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{255}
+        
+        \PY{n}{img5} \PY{o}{=} \PY{n}{io}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{img/pic5.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{img5} \PY{o}{=} \PY{n}{resize}\PY{p}{(}\PY{n}{img5}\PY{p}{,} \PY{n}{size}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{255}
+        
+        \PY{n}{img6} \PY{o}{=} \PY{n}{io}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{img/pic6.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{img6} \PY{o}{=} \PY{n}{resize}\PY{p}{(}\PY{n}{img6}\PY{p}{,} \PY{n}{size}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{255}
+        
+        
+        \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imagini initiale}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
+        \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{611}\PY{p}{)}
+        \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{612}\PY{p}{)}
+        \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{613}\PY{p}{)}
+        \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{614}\PY{p}{)}
+        \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{615}\PY{p}{)}
+        \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{616}\PY{p}{)}
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea 1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea 2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea 3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea 4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea 5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea 6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img1}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img2}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img3}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img4}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img5}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img6}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_1_0.png}
-    \end{center}
-    { \hspace*{\fill} \\}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}Nitroi\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Continuum\textbackslash{}anaconda3\textbackslash{}envs\textbackslash{}PAIC\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}skimage\textbackslash{}transform\textbackslash{}\_warps.py:105: UserWarning: The default mode, 'constant', will be changed to 'reflect' in skimage 0.15.
+  warn("The default mode, 'constant', will be changed to 'reflect' in "
+C:\textbackslash{}Users\textbackslash{}Nitroi\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Continuum\textbackslash{}anaconda3\textbackslash{}envs\textbackslash{}PAIC\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}skimage\textbackslash{}transform\textbackslash{}\_warps.py:110: UserWarning: Anti-aliasing will be enabled by default in skimage 0.15 to avoid aliasing artifacts when down-sampling images.
+  warn("Anti-aliasing will be enabled by default in skimage 0.15 to "
+
+    \end{Verbatim}
+
     
-    \subsubsection{Functiile pentru zgomot Gaussian, respectiv zgomot
-impulsiv.}\label{functiile-pentru-zgomot-gaussian-respectiv-zgomot-impulsiv.}
+    \begin{verbatim}
+<Figure size 4000x8000 with 6 Axes>
+    \end{verbatim}
+
+    
+    \hypertarget{functiile-pentru-zgomot-gaussian-respectiv-zgomot-impulsiv.}{%
+\subsubsection{Functiile pentru zgomot Gaussian, respectiv zgomot
+impulsiv.}\label{functiile-pentru-zgomot-gaussian-respectiv-zgomot-impulsiv.}}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}2}]:} \PY{k+kn}{import} \PY{n+nn}{os}
@@ -368,6 +374,7 @@ impulsiv.}\label{functiile-pentru-zgomot-gaussian-respectiv-zgomot-impulsiv.}
               \PY{n}{gauss} \PY{o}{=} \PY{n}{gauss}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{row}\PY{p}{,}\PY{n}{col}\PY{p}{,}\PY{n}{ch}\PY{p}{)}
               \PY{n}{noisy} \PY{o}{=} \PY{n}{image} \PY{o}{+} \PY{n}{gauss}
               \PY{k}{return} \PY{n}{noisy}
+        
         \PY{k}{def} \PY{n+nf}{saltpepper}\PY{p}{(}\PY{n}{image}\PY{p}{,}\PY{n}{area}\PY{p}{)}\PY{p}{:}
               \PY{n}{row}\PY{p}{,}\PY{n}{col}\PY{p}{,}\PY{n}{ch} \PY{o}{=} \PY{n}{image}\PY{o}{.}\PY{n}{shape}
               \PY{n}{s\PYZus{}vs\PYZus{}p} \PY{o}{=} \PY{l+m+mf}{0.5}
@@ -388,63 +395,90 @@ impulsiv.}\label{functiile-pentru-zgomot-gaussian-respectiv-zgomot-impulsiv.}
               \PY{k}{return} \PY{n}{out}
 \end{Verbatim}
 
-    \subsubsection{Adaugarea zgomotului pe
-imagini}\label{adaugarea-zgomotului-pe-imagini}
+
+    \hypertarget{adaugarea-zgomotului-pe-imagini}{%
+\subsubsection{Adaugarea zgomotului pe
+imagini}\label{adaugarea-zgomotului-pe-imagini}}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{=}\PY{p}{[}\PY{p}{]}
-        \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{=}\PY{p}{[}\PY{p}{]}
-        
-        \PY{n}{img1ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
-        \PY{n}{img1ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
-        \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img1ZG}\PY{p}{)}
-        \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img1ZI}\PY{p}{)}
-        
-        \PY{n}{img2ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
-        \PY{n}{img2ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
-        \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img2ZG}\PY{p}{)}
-        \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img2ZI}\PY{p}{)}
-        
-        \PY{n}{img3ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
-        \PY{n}{img3ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
-        \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img3ZG}\PY{p}{)}
-        \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img3ZI}\PY{p}{)}
-        
-        \PY{n}{img4ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
-        \PY{n}{img4ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
-        \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img4ZG}\PY{p}{)}
-        \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img4ZI}\PY{p}{)}
-        
-        \PY{n}{img5ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
-        \PY{n}{img5ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
-        \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img5ZG}\PY{p}{)}
-        \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img5ZI}\PY{p}{)}
-        
-        \PY{n}{img6ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
-        \PY{n}{img6ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
-        \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img6ZG}\PY{p}{)}
-        \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img6ZI}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+         \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+         
+         \PY{n}{img1ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
+         \PY{n}{img1ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img1ZG}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img1ZI}\PY{p}{)}
+         
+         \PY{n}{img2ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
+         \PY{n}{img2ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img2ZG}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img2ZI}\PY{p}{)}
+         
+         \PY{n}{img3ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
+         \PY{n}{img3ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img3ZG}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img3ZI}\PY{p}{)}
+         
+         \PY{n}{img4ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
+         \PY{n}{img4ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img4ZG}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img4ZI}\PY{p}{)}
+         
+         \PY{n}{img5ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
+         \PY{n}{img5ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img5ZG}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img5ZI}\PY{p}{)}
+         
+         \PY{n}{img5ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{l+m+mf}{0.2}\PY{p}{)}
+         \PY{n}{img5ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{l+m+mf}{0.2}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img5ZG}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img5ZI}\PY{p}{)}
+         
+         \PY{n}{img5ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{l+m+mf}{0.05}\PY{p}{)}
+         \PY{n}{img5ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{l+m+mf}{0.05}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img5ZG}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img5ZI}\PY{p}{)}
+         
+         \PY{n}{img6ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
+         \PY{n}{img6ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img6ZG}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img6ZI}\PY{p}{)}
+         
+         \PY{n}{img6ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{l+m+mf}{0.3}\PY{p}{)}
+         \PY{n}{img6ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{l+m+mf}{0.3}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img6ZG}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img6ZI}\PY{p}{)}
+         
+         \PY{n}{img6ZG}\PY{o}{=}\PY{n}{gaussianNoise}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{l+m+mf}{0.03}\PY{p}{)}
+         \PY{n}{img6ZI}\PY{o}{=}\PY{n}{saltpepper}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{l+m+mf}{0.03}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img6ZG}\PY{p}{)}
+         \PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{img6ZI}\PY{p}{)}
 \end{Verbatim}
 
+
     \begin{Verbatim}[commandchars=\\\{\}]
-C:\textbackslash{}Users\textbackslash{}nitroi\textbackslash{}Anaconda3\textbackslash{}envs\textbackslash{}PAIC\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}ipykernel\_launcher.py:20: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
-C:\textbackslash{}Users\textbackslash{}nitroi\textbackslash{}Anaconda3\textbackslash{}envs\textbackslash{}PAIC\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}ipykernel\_launcher.py:26: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
+C:\textbackslash{}Users\textbackslash{}Nitroi\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Continuum\textbackslash{}anaconda3\textbackslash{}envs\textbackslash{}PAIC\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}ipykernel\_launcher.py:21: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
+C:\textbackslash{}Users\textbackslash{}Nitroi\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Continuum\textbackslash{}anaconda3\textbackslash{}envs\textbackslash{}PAIC\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}ipykernel\_launcher.py:27: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
 
     \end{Verbatim}
 
-    \subsubsection{Implementarea filtrelor clasice mediere si medie
-aritmetca}\label{implementarea-filtrelor-clasice-mediere-si-medie-aritmetca}
+    \hypertarget{implementarea-filtrelor-clasice-mediere-si-medie-aritmetca}{%
+\subsubsection{Implementarea filtrelor clasice mediere si medie
+aritmetca}\label{implementarea-filtrelor-clasice-mediere-si-medie-aritmetca}}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}4}]:} \PY{k}{def} \PY{n+nf}{medianFilter}\PY{p}{(}\PY{n}{img}\PY{p}{)}\PY{p}{:}
-            \PY{n}{L}\PY{p}{,}\PY{n}{l}\PY{p}{,}\PY{n}{\PYZus{}}\PY{o}{=}\PY{n}{img}\PY{o}{.}\PY{n}{shape}
-            \PY{n}{filtru} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{9}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{9}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{9}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+            \PY{n}{L}\PY{p}{,}\PY{n}{l}\PY{p}{,}\PY{n}{\PYZus{}}\PY{o}{=}\PY{n}{img}\PY{o}{.}\PY{n}{shape}    
             \PY{n}{imag} \PY{o}{=} \PY{n}{img}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float64}\PY{p}{)}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
             \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{L}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
                 \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{l}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
-                    \PY{n}{imag} \PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{n}{j}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{img}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{*}\PY{n}{filtru}\PY{p}{)}
-                    \PY{n}{imag} \PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{n}{j}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{img}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{*}\PY{n}{filtru}\PY{p}{)}
-                    \PY{n}{imag} \PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{n}{j}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{img}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{*}\PY{n}{filtru}\PY{p}{)}
+                    \PY{n}{vR}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{img}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+                    \PY{n}{vG}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{img}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+                    \PY{n}{vB}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{img}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+                    \PY{n}{mean}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{vR}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,}\PY{n}{vG}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,}\PY{n}{vB}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+                    \PY{n}{imag} \PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{n}{j}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{vR}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}
+                    \PY{n}{imag} \PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{n}{j}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{vG}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}
+                    \PY{n}{imag} \PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{n}{j}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n}{vB}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}
             \PY{k}{return} \PY{n}{imag}
         \PY{k}{def} \PY{n+nf}{aritmeticFilter}\PY{p}{(}\PY{n}{img}\PY{p}{)}\PY{p}{:}
             \PY{n}{L}\PY{p}{,}\PY{n}{l}\PY{p}{,}\PY{n}{\PYZus{}}\PY{o}{=}\PY{n}{img}\PY{o}{.}\PY{n}{shape}
@@ -457,294 +491,565 @@ aritmetca}\label{implementarea-filtrelor-clasice-mediere-si-medie-aritmetca}
             \PY{k}{return} \PY{n}{imag}
 \end{Verbatim}
 
-    \subsection{Comparatia rezultatlor celor 3
-filtre}\label{comparatia-rezultatlor-celor-3-filtre}
 
-\subsubsection{Imaginea 1}\label{imaginea-1}
+    \hypertarget{implementarea-neighborhood-evaluated-adaptive-filter-neavf}{%
+\subsubsection{Implementarea Neighborhood evaluated adaptive filter
+(NEAVF)}\label{implementarea-neighborhood-evaluated-adaptive-filter-neavf}}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{0}
-        \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{60}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}5}]:} \PY{k+kn}{import} \PY{n+nn}{operator}
+        \PY{c+c1}{\PYZsh{}Lamda=2}
+        \PY{c+c1}{\PYZsh{}delta=7.5}
+        \PY{k}{def} \PY{n+nf}{AVD}\PY{p}{(}\PY{n}{v}\PY{p}{)}\PY{p}{:}
+            \PY{n}{R}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{l+m+mi}{9}\PY{p}{)}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{:}
+                \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{R}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{+}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{v}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{v}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{p}{(}\PY{n}{v}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{v}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+            \PY{k}{return} \PY{n}{R}
+        \PY{k}{def} \PY{n+nf}{DALS}\PY{p}{(}\PY{n}{V}\PY{p}{,}\PY{n}{index}\PY{p}{)}\PY{p}{:}
+            \PY{n}{F}\PY{o}{=}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{4}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{V}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{V}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{index}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{V}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{V}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}
+            \PY{k}{return} \PY{n}{F}
+                    
+        \PY{k}{def} \PY{n+nf}{NEAVF}\PY{p}{(}\PY{n}{img}\PY{p}{)}\PY{p}{:}    
+            \PY{n}{L}\PY{p}{,}\PY{n}{l}\PY{p}{,}\PY{n}{\PYZus{}}\PY{o}{=}\PY{n}{img}\PY{o}{.}\PY{n}{shape}
+            \PY{n}{imag} \PY{o}{=} \PY{n}{img}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float64}\PY{p}{)}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+            \PY{n}{C}\PY{o}{=}\PY{n}{img}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float64}\PY{p}{)}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+            \PY{n}{F}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{p}{(}\PY{n}{L}\PY{p}{,}\PY{n}{l}\PY{p}{)}\PY{p}{)}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{L}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+                \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{l}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{v}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{9}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+                    \PY{n}{v}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{n}{img}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{9}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+                    \PY{n}{v}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{v}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]} \PY{o}{=} \PY{n}{v}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,}\PY{n}{v}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}            
+                    \PY{n}{cV}\PY{o}{=}\PY{n}{v}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+                    \PY{n}{v}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{n}{AVD}\PY{p}{(}\PY{n}{v}\PY{p}{)}
+                    \PY{n}{v}\PY{o}{=}\PY{n+nb}{sorted}\PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{n}{key}\PY{o}{=}\PY{n}{operator}\PY{o}{.}\PY{n}{itemgetter}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+                    \PY{n}{C}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{=}\PY{n}{v}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+                    \PY{n}{C}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{n}{v}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+                    \PY{n}{C}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{n}{v}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}
+                    \PY{k}{for} \PY{n}{t} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{:}
+                        \PY{k}{if} \PY{n}{v}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{==}\PY{n}{cV}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o+ow}{and} \PY{n}{v}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{==}\PY{n}{cV}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o+ow}{and} \PY{n}{v}\PY{p}{[}\PY{n}{t}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{==}\PY{n}{cV}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{:}
+                            \PY{n}{index}\PY{o}{=}\PY{n}{t}
+                            \PY{k}{break}
+                    \PY{k}{if} \PY{n}{index}\PY{o}{\PYZgt{}}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{:}
+                        \PY{n}{F}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{o}{=}\PY{n}{DALS}\PY{p}{(}\PY{n}{v}\PY{p}{,}\PY{n}{index}\PY{p}{)}
+                    \PY{k}{else}\PY{p}{:}
+                        \PY{n}{F}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{1}            
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{L}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+                \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{l}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{H}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{power}\PY{p}{(}\PY{n}{F}\PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}\PY{n}{j}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+                    
+                    \PY{k}{if}\PY{p}{(}\PY{n}{H}\PY{o}{\PYZgt{}}\PY{l+m+mf}{7.5}\PY{p}{)}\PY{p}{:}
+                        \PY{n}{imag}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{p}{]}\PY{o}{=}\PY{n}{img}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{p}{]}
+                    \PY{k}{else}\PY{p}{:}
+                        \PY{n}{imag}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{p}{]}\PY{o}{=}\PY{n}{C}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{p}{]}
+            \PY{k}{return} \PY{n}{imag}
+\end{Verbatim}
+
+
+    \hypertarget{functiile-utilizate-la-calculul-zgomotului}{%
+\subsection{Functiile utilizate la calculul
+zgomotului}\label{functiile-utilizate-la-calculul-zgomotului}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{k+kn}{import} \PY{n+nn}{math}
+        \PY{k}{def} \PY{n+nf}{mse}\PY{p}{(}\PY{n}{imgInit}\PY{p}{,} \PY{n}{imgFinal}\PY{p}{)}\PY{p}{:} 
+            \PY{n}{r} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{imgInit}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{float64}\PY{p}{)}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}
+            \PY{n}{c} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{imgFinal}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{float64}\PY{p}{)}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}
+            \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{r} \PY{o}{\PYZhy{}} \PY{n}{c}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{PSNR}\PY{p}{(}\PY{n}{imgInit}\PY{p}{,} \PY{n}{imgFinal}\PY{p}{)}\PY{p}{:}
+            \PY{n}{rng} \PY{o}{=} \PY{n}{imgInit}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{imgFinal}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}
+            \PY{n}{dv} \PY{o}{=} \PY{p}{(}\PY{n}{rng} \PY{o}{+} \PY{l+m+mf}{0.0}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+            \PY{k}{with} \PY{n}{np}\PY{o}{.}\PY{n}{errstate}\PY{p}{(}\PY{n}{divide}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ignore}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+                \PY{n}{rt} \PY{o}{=} \PY{n}{dv} \PY{o}{/} \PY{n}{mse}\PY{p}{(}\PY{n}{imgInit}\PY{p}{,} \PY{n}{imgFinal}\PY{p}{)}
+            \PY{k}{return} \PY{l+m+mf}{10.0} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log10}\PY{p}{(}\PY{n}{rt}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{MAE}\PY{p}{(}\PY{n}{imgInit}\PY{p}{,} \PY{n}{imgFinal}\PY{p}{)}\PY{p}{:}  
+            \PY{n}{r} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{imgInit}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{float64}\PY{p}{)}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}
+            \PY{n}{c} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{imgFinal}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{float64}\PY{p}{)}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}
+            \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{r} \PY{o}{\PYZhy{}} \PY{n}{c}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \hypertarget{comparatia-rezultatlor-celor-3-filtre}{%
+\subsection{Comparatia rezultatlor celor 3
+filtre}\label{comparatia-rezultatlor-celor-3-filtre}}
+
+\hypertarget{imaginea-1}{%
+\subsubsection{Imaginea 1}\label{imaginea-1}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{0}
+        \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{n}{figs}\PY{p}{)}
         \PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
         \PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        
+        \PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
         
         \PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
         \PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+        \PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
         
         
-        
-        \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 1:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
-        \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{611}\PY{p}{)}
-        \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{612}\PY{p}{)}
-        \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{613}\PY{p}{)}
-        \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{614}\PY{p}{)}
-        \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{615}\PY{p}{)}
-        \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{616}\PY{p}{)}
+        \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 1:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
+        \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{811}\PY{p}{)}
+        \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{812}\PY{p}{)}
+        \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{813}\PY{p}{)}
+        \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{814}\PY{p}{)}
+        \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{815}\PY{p}{)}
+        \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{816}\PY{p}{)}
+        \PY{n}{ax7} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{817}\PY{p}{)}
+        \PY{n}{ax8} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{818}\PY{p}{)}
         \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}
-        \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}
-        \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}
-        \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax7}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax8}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img1}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax7}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax8}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-
-    \end{Verbatim}
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_1.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_13_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    \subsubsection{Imaginea 2}\label{imaginea-2}
+    \hypertarget{imaginea-2}{%
+\subsubsection{Imaginea 2}\label{imaginea-2}}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{1}
-        \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{60}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{1}
+        \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{n}{figs}\PY{p}{)}
         \PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
         \PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        
+        \PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
         
         \PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
         \PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+        \PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
         
         
-        
-        \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 2:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
-        \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{611}\PY{p}{)}
-        \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{612}\PY{p}{)}
-        \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{613}\PY{p}{)}
-        \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{614}\PY{p}{)}
-        \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{615}\PY{p}{)}
-        \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{616}\PY{p}{)}
+        \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 2:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
+        \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{811}\PY{p}{)}
+        \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{812}\PY{p}{)}
+        \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{813}\PY{p}{)}
+        \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{814}\PY{p}{)}
+        \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{815}\PY{p}{)}
+        \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{816}\PY{p}{)}
+        \PY{n}{ax7} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{817}\PY{p}{)}
+        \PY{n}{ax8} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{818}\PY{p}{)}
         \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}
-        \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}
-        \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}
-        \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax7}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax8}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img2}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax7}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax8}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-
-    \end{Verbatim}
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_11_1.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    \subsubsection{Imaginea 3}\label{imaginea-3}
+    \hypertarget{imaginea-3}{%
+\subsubsection{Imaginea 3}\label{imaginea-3}}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{2}
-        \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{60}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{2}
+        \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{n}{figs}\PY{p}{)}
         \PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
         \PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        
+        \PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
         
         \PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
         \PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+        \PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
         
         
-        
-        \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 3:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
-        \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{611}\PY{p}{)}
-        \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{612}\PY{p}{)}
-        \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{613}\PY{p}{)}
-        \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{614}\PY{p}{)}
-        \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{615}\PY{p}{)}
-        \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{616}\PY{p}{)}
+        \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 3:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
+        \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{811}\PY{p}{)}
+        \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{812}\PY{p}{)}
+        \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{813}\PY{p}{)}
+        \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{814}\PY{p}{)}
+        \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{815}\PY{p}{)}
+        \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{816}\PY{p}{)}
+        \PY{n}{ax7} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{817}\PY{p}{)}
+        \PY{n}{ax8} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{818}\PY{p}{)}
         \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}
-        \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}
-        \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}
-        \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax7}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax8}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img3}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax7}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+        \PY{n}{ax8}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-
-    \end{Verbatim}
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_13_1.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_17_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    \subsubsection{Imaginea 4}\label{imaginea-4}
+    \hypertarget{imaginea-4}{%
+\subsubsection{Imaginea 4}\label{imaginea-4}}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{3}
-        \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{60}\PY{p}{)}\PY{p}{)}
-        \PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        
-        
-        \PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        
-        
-        
-        \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 4:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
-        \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{611}\PY{p}{)}
-        \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{612}\PY{p}{)}
-        \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{613}\PY{p}{)}
-        \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{614}\PY{p}{)}
-        \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{615}\PY{p}{)}
-        \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{616}\PY{p}{)}
-        \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}
-        \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}
-        \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}
-        \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}
-        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
-\end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-
-    \end{Verbatim}
-
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_1.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    \subsubsection{Imaginea 5}\label{imaginea-5}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{4}
-        \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{60}\PY{p}{)}\PY{p}{)}
-        \PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        
-        
-        \PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        
-        
-        
-        \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 5:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
-        \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{611}\PY{p}{)}
-        \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{612}\PY{p}{)}
-        \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{613}\PY{p}{)}
-        \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{614}\PY{p}{)}
-        \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{615}\PY{p}{)}
-        \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{616}\PY{p}{)}
-        \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}
-        \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}
-        \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-        \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}
-        \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}
-        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
-\end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-
-    \end{Verbatim}
-
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_17_1.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    \subsubsection{Imaginea 6}\label{imaginea-6}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{5}
-         \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{60}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{3}
+         \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{n}{figs}\PY{p}{)}
          \PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
          \PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-         
+         \PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
          
          \PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
          \PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
          
          
-         
-         \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 6:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
-         \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{611}\PY{p}{)}
-         \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{612}\PY{p}{)}
-         \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{613}\PY{p}{)}
-         \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{614}\PY{p}{)}
-         \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{615}\PY{p}{)}
-         \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{616}\PY{p}{)}
+         \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 4:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
+         \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{811}\PY{p}{)}
+         \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{812}\PY{p}{)}
+         \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{813}\PY{p}{)}
+         \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{814}\PY{p}{)}
+         \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{815}\PY{p}{)}
+         \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{816}\PY{p}{)}
+         \PY{n}{ax7} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{817}\PY{p}{)}
+         \PY{n}{ax8} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{818}\PY{p}{)}
          \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-         \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}
-         \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}
-         \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
-         \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}
-         \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img4}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-
-    \end{Verbatim}
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_19_1.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_19_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{imaginea-5}{%
+\subsubsection{Imaginea 5}\label{imaginea-5}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{4}
+         \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{n}{figs}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         
+         
+         \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 5:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
+         \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{811}\PY{p}{)}
+         \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{812}\PY{p}{)}
+         \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{813}\PY{p}{)}
+         \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{814}\PY{p}{)}
+         \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{815}\PY{p}{)}
+         \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{816}\PY{p}{)}
+         \PY{n}{ax7} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{817}\PY{p}{)}
+         \PY{n}{ax8} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{818}\PY{p}{)}
+         \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_21_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{5}
+         \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{n}{figs}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         
+         
+         \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 5:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
+         \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{811}\PY{p}{)}
+         \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{812}\PY{p}{)}
+         \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{813}\PY{p}{)}
+         \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{814}\PY{p}{)}
+         \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{815}\PY{p}{)}
+         \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{816}\PY{p}{)}
+         \PY{n}{ax7} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{817}\PY{p}{)}
+         \PY{n}{ax8} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{818}\PY{p}{)}
+         \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian de 20}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv de 20}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_22_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{6}
+         \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{n}{figs}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         
+         
+         \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 5:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
+         \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{811}\PY{p}{)}
+         \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{812}\PY{p}{)}
+         \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{813}\PY{p}{)}
+         \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{814}\PY{p}{)}
+         \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{815}\PY{p}{)}
+         \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{816}\PY{p}{)}
+         \PY{n}{ax7} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{817}\PY{p}{)}
+         \PY{n}{ax8} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{818}\PY{p}{)}
+         \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian de 5}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv de 5}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img5}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{imaginea-6}{%
+\subsubsection{Imaginea 6}\label{imaginea-6}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{7}
+         \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{n}{figs}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         
+         
+         \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 6:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
+         \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{811}\PY{p}{)}
+         \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{812}\PY{p}{)}
+         \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{813}\PY{p}{)}
+         \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{814}\PY{p}{)}
+         \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{815}\PY{p}{)}
+         \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{816}\PY{p}{)}
+         \PY{n}{ax7} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{817}\PY{p}{)}
+         \PY{n}{ax8} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{818}\PY{p}{)}
+         \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_25_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{8}
+         \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{n}{figs}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         
+         
+         \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 6:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
+         \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{811}\PY{p}{)}
+         \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{812}\PY{p}{)}
+         \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{813}\PY{p}{)}
+         \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{814}\PY{p}{)}
+         \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{815}\PY{p}{)}
+         \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{816}\PY{p}{)}
+         \PY{n}{ax7} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{817}\PY{p}{)}
+         \PY{n}{ax8} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{818}\PY{p}{)}
+         \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian de 30}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv de 30}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_26_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{index}\PY{o}{=}\PY{l+m+mi}{9}
+         \PY{n}{fig}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{n}{figs}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{=}\PY{n}{medianFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{=}\PY{n}{aritmeticFilter}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         \PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{=}\PY{n}{NEAVF}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{p}{)}
+         
+         
+         \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pentru imaginea 6:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
+         \PY{n}{ax1} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{811}\PY{p}{)}
+         \PY{n}{ax2} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{812}\PY{p}{)}
+         \PY{n}{ax3} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{813}\PY{p}{)}
+         \PY{n}{ax4} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{814}\PY{p}{)}
+         \PY{n}{ax5} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{815}\PY{p}{)}
+         \PY{n}{ax6} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{816}\PY{p}{)}
+         \PY{n}{ax7} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{817}\PY{p}{)}
+         \PY{n}{ax8} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{l+m+mi}{818}\PY{p}{)}
+         \PY{n}{ax1}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian de 3}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot gaussian dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv de 3}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul median PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterMedian}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul medie aritmetica PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{title}\PY{o}{.}\PY{n}{set\PYZus{}text}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imaginea afectata de zgomot impulsiv dupa filtrul NEAVF PSNR: }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{PSNR}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ si MAE: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{MAE}\PY{p}{(}\PY{n}{img6}\PY{p}{,}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax1}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotGaussian}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax2}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax3}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax4}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZG\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax5}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{Lista\PYZus{}imgZgomotImpulsiv}\PY{p}{[}\PY{n}{index}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax6}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterMedian}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax7}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterAritmetic}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{ax8}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{imgZI\PYZus{}afterNEAVF}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
